@@ -12,14 +12,22 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    private DataSource dataSource;
-    private EntityManager em;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public SpringConfig(DataSource dataSource, EntityManager em){
-        this.dataSource = dataSource;
-        this.em = em;
+    public SpringConfig(MemberRepository memberRepository){
+        this.memberRepository = memberRepository;
     }
+
+    // jdbc / jpa 사용시
+//    private DataSource dataSource;
+//    private EntityManager em;
+//
+//    @Autowired
+//    public SpringConfig(DataSource dataSource, EntityManager em){
+//        this.dataSource = dataSource;
+//        this.em = em;
+//    }
 
 //  @Autowired
 //  public SpringConfig(DataSource dataSource){
@@ -28,16 +36,16 @@ public class SpringConfig {
 
     @Bean
     public MemberService memberService(){
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
 
     // 직접 컴포넌트를 추가할 경우는 하기와 같이
-    @Bean
-    public MemberRepository memberRepository(){
+//    @Bean
+//    public MemberRepository memberRepository(){
           // 순수 jdbc 사용시
 //        return new JdbcMemberRepository();
 //        return new MemoryMemberRepository();
 //        return new JdbcTemplateMemberRepository(dataSource);
-        return new JpaMemberRepository(em);
-    }
+//        return new JpaMemberRepository(em);
+//    }
 }
