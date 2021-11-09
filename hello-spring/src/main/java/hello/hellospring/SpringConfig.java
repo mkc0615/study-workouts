@@ -1,5 +1,6 @@
 package hello.hellospring;
 
+import hello.hellospring.aop.TimeTraceAop;
 import hello.hellospring.repository.*;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
+    // springData 사용시
     private final MemberRepository memberRepository;
 
     @Autowired
@@ -38,6 +40,11 @@ public class SpringConfig {
     public MemberService memberService(){
         return new MemberService(memberRepository);
     }
+
+//    @Bean
+//    public TimeTraceAop timeTraceAop(){
+//        return new TimeTraceAop();
+//    }
 
     // 직접 컴포넌트를 추가할 경우는 하기와 같이
 //    @Bean
