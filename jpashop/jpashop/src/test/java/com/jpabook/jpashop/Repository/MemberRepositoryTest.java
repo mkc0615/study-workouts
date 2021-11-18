@@ -1,8 +1,10 @@
 package com.jpabook.jpashop.Repository;
 
 import com.jpabook.jpashop.domain.Member;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.jpabook.jpashop.service.MemberService;
+
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,27 +15,43 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class MemberRepositoryTest {
+@Transactional
+public class MemberRepositoryTest {
+
+    @Autowired
+    MemberService memberService;
     @Autowired
     MemberRepository memberRepository;
 
-
     @Test
-    @Transactional
     public void testMember() throws Exception{
 
         // given
         Member member = new Member();
-        member.setUsername("memberA");
+        member.setName("kim");
 
         // when
-        Long savedId = memberRepository.save(member);
-        Member findMember = memberRepository.find(savedId);
+        Long savedId = memberService.join(member);
 
         // then
-        Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
-        Assertions.assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
+        Assert.assertEquals(member, memberRepository.findOne(savedId));
+    }
 
-        Assertions.assertThat(findMember).isEqualTo(member);
+    @Test(expected=IllegalStateException.class)
+    public void duplicateCheck() throws Exception{
+
+        //given
+        Member member1 = new Member();
+        member1.setName("kim");
+
+        Member member2 = new Member();
+        member2.setName("kim");
+
+        //when
+        memberService.join(member1);
+        memberService.join(member2);
+
+        //then
+        Assert.fail("예외가 발생해야한다!");
     }
 }
