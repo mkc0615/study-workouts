@@ -25,6 +25,10 @@ public class OrderItem {
     private int orderPrice;
     private int count;
 
+    // 외부에서 못 쓰도록 제약
+    protected OrderItem(){
+    }
+
     //== contructor method ==//
     public static OrderItem createOrderItem(Item item, int orderPrice, int count){
         OrderItem orderItem = new OrderItem();
