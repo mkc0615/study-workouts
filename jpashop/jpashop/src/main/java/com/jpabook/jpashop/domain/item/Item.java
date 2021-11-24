@@ -3,6 +3,7 @@ package com.jpabook.jpashop.domain.item;
 import com.jpabook.jpashop.domain.Category;
 import com.jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="Dtype")
 @Getter
+@Setter
 public abstract class Item {
 
     @Id @GeneratedValue
@@ -31,8 +33,8 @@ public abstract class Item {
         this.stockQuantity += quantity;
     }
     // 재고 감소
-    public void removeStock(int quantity){
-        int restStock = this.stockQuantity - quantity;
+    public void removeStock(int orderQuantity){
+        int restStock = this.stockQuantity - orderQuantity;
         if(restStock < 0){
             throw new NotEnoughStockException("Need More Stock!");
         }
