@@ -88,10 +88,8 @@ public class OrderServiceTest {
 
     }
 
-
     private Member createMember () {
         Member member = new Member();
-        Item item = new Book();
         member.setName("mem1");
         member.setAddress(new Address("Seoul", "gangnam", "123-123"));
         em.persist(member);
@@ -103,6 +101,7 @@ public class OrderServiceTest {
         book.setName(name);
         book.setPrice(price);
         book.setStockQuantity(stockQuantity);
+        em.persist(book);
         return book;
     }
 
