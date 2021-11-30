@@ -16,7 +16,7 @@ public class ItemRepository {
     public void save(Item item){
         if(item.getId() == null){
             em.persist(item);
-        }else{
+        }else{ // 병합은 조심해야된다. 모든 속성이 변경되기 때문이다 // 데이터베이스의 내용이 잘못하면 변경될 수 있음
             em.merge(item);
         }
     }
