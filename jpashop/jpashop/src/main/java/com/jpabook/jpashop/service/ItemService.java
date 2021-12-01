@@ -30,7 +30,7 @@ public class ItemService {
         findItem.setName(name);
         findItem.setStockQuantity(stockQuantity);
     }
- 
+
     public List<Item> findItems(){
         return itemRepository.findAll();
     }
