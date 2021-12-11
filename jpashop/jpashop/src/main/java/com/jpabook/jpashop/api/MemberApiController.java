@@ -35,6 +35,7 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
+    // entity 이용이 위험하므로 dto를 사용
     @Data
     public class CreateMemberRequest{
         @NotEmpty
