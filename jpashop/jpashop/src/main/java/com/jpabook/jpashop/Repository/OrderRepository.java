@@ -28,7 +28,7 @@ public class OrderRepository {
     // 동적 쿼리 사용 방법1 : jpql를 하드로 직접 작성 -> 복잡해지고 권장 x
     public List<Order> findAll(OrderSearch orderSearch){
 
-        List<Order> resultList = em.createQuery("select o from Order o join o.member m" +
+        List<Order> resultList = em.createQuery("select o from Order o join o.member m " +
                         "where o.status =:status " +
                         "and m.name like :name", Order.class)
                 .setParameter("status", orderSearch.getOrderStatus())
