@@ -65,4 +65,23 @@ public class OrderRepository {
 
     // 최적의 방법은 후에 기술할 queryDsl을 사용한 것!
 
+    // join fetch query
+    public List<Order> findAllWithMemberDelivery(){
+        return em.createQuery(
+                "select o from Order o"+
+                        " join fetch o.member m"+
+                        "join fetch o.delivery d", Order.class
+        ).getResultList();
+    }
+
+    //
+    public List<OrderSimpleQueryDto> findOrderDtos(){
+        return em.createQuery("select new jpabook.jpashop.Repository.OrderSimpleQueryDto("+
+                "o.id, o.name, o.orderDate, o.orderStatus, o.address)"+
+                " from Order o" +
+                " join o.member m" +
+                " join o.delivery d", OrderSimpleQueryDto.class)
+                .getResultList();
+    }
+
 }
