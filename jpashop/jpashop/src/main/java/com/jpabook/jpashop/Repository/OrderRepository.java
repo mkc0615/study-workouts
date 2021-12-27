@@ -1,5 +1,6 @@
 package com.jpabook.jpashop.Repository;
 
+import com.jpabook.jpashop.Repository.order.simplequery.OrderSimpleQueryDto;
 import com.jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -74,14 +75,5 @@ public class OrderRepository {
         ).getResultList();
     }
 
-    //
-    public List<OrderSimpleQueryDto> findOrderDtos(){
-        return em.createQuery("select new jpabook.jpashop.Repository.OrderSimpleQueryDto("+
-                "o.id, o.name, o.orderDate, o.orderStatus, o.address)"+
-                " from Order o" +
-                " join o.member m" +
-                " join o.delivery d", OrderSimpleQueryDto.class)
-                .getResultList();
-    }
 
 }

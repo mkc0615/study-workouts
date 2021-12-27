@@ -2,7 +2,8 @@ package com.jpabook.jpashop.api;
 
 import com.jpabook.jpashop.Repository.OrderRepository;
 import com.jpabook.jpashop.Repository.OrderSearch;
-import com.jpabook.jpashop.Repository.OrderSimpleQueryDto;
+import com.jpabook.jpashop.Repository.order.simplequery.OrderSimpleQueryDto;
+import com.jpabook.jpashop.Repository.order.simplequery.OrderSimpleQueryRepository;
 import com.jpabook.jpashop.domain.Address;
 import com.jpabook.jpashop.domain.Order;
 import com.jpabook.jpashop.domain.OrderStatus;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     // entity 노출로 잘못된 방법!
     @GetMapping("/api/v1/simple-orders")
@@ -57,9 +59,15 @@ public class OrderSimpleApiController {
     // query를 직접 수정하여 select 해올 부분을 줄이는 방법
     @GetMapping("/api/v4/simple-orders")
     public List<OrderSimpleQueryDto> ordersV4(){
-        return orderRepository.findOrderDtos();
+        return orderSimpleQueryRepository.findOrderDtos();
     }
     // v3 vs v4 ? trade off가 있음 : v4는 성능이 약간 좋지만 직접 query를 작성해야되서 특정 dto에서만 쓸 수밖에 없다. 즉 재사용성이 없음!
+
+    // Recommended way to get data with jpa query
+    // 1. Get data with dto from entity
+    // 2. Use fetch join (v3)
+    // 3. If there are still problems select dto directly from query (v4)
+    // 4. Still having problems? then you will have to use jdbc templates or native sql
 
     // Object for this practice only!
     @Data

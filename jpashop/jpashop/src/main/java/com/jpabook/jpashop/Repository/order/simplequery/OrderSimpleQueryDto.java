@@ -1,4 +1,4 @@
-package com.jpabook.jpashop.Repository;
+package com.jpabook.jpashop.Repository.order.simplequery;
 
 import com.jpabook.jpashop.domain.Address;
 import com.jpabook.jpashop.domain.Order;
