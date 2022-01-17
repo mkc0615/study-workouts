@@ -2,6 +2,8 @@ package com.jpabook.jpashop.api;
 
 import com.jpabook.jpashop.Repository.OrderRepository;
 import com.jpabook.jpashop.Repository.OrderSearch;
+import com.jpabook.jpashop.Repository.order.query.OrderQueryDto;
+import com.jpabook.jpashop.Repository.order.query.OrderQueryRepository;
 import com.jpabook.jpashop.domain.Address;
 import com.jpabook.jpashop.domain.Order;
 import com.jpabook.jpashop.domain.OrderItem;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     // Not good : entity exposed!
     @GetMapping("/api/v1/orders")
@@ -69,6 +72,18 @@ public class OrderApiController {
                 .map(o -> new OrderDto(o))
                 .collect(Collectors.toList());
         return collect;
+    }
+
+    // dto direct selection with jpa
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> ordersV4(){
+        return orderQueryRepository.findOrderQueryDtos();
+    }
+
+    // dto direct selection ( optimized collection search )
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(){
+        return orderQueryRepository.findAllByDtoOptimize();
     }
 
     @Data
