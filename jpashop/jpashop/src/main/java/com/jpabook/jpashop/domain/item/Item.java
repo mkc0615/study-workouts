@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // JOINED로 잡으면 나눠서 테이블 매핑도 가능
 @DiscriminatorColumn(name="Dtype")
 @Getter
 @Setter
@@ -24,6 +24,7 @@ public abstract class Item {
     private int price;
     private int stockQuantity;
 
+    // 실전에서는 이렇게 안쓸 것.
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
 
