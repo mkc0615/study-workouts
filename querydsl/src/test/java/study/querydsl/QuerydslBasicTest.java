@@ -1,5 +1,6 @@
 package study.querydsl;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import study.querydsl.domain.QMember;
 import study.querydsl.domain.Team;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static study.querydsl.domain.QMember.member;
@@ -88,6 +91,41 @@ public class QuerydslBasicTest {
                 )
                 .fetchOne();
         assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
+
+    @Test
+    public void resultFetch(){
+        List<Member> fetch = queryFactory
+                .selectFrom(member)
+                .fetch();
+
+        Member fetchOne = queryFactory
+                .selectFrom(QMember.member)
+                .fetchOne();
+
+        Member fetchf = queryFactory
+                .selectFrom(QMember.member)
+                // .limit(1).fetchOne();
+                .fetchFirst();
+
+        // depreciated
+        QueryResults<Member> results = queryFactory
+                .selectFrom(member)
+                .fetchResults();
+        results.getTotal();
+        List<Member> content = results.getResults();
+
+        // depreciated
+        long total = queryFactory
+                .selectFrom(member)
+                .fetchCount();
+
+        // for future use below!
+        Long totalCount = queryFactory
+                // .select(Wildcard.count) // select count(*)
+                .select(member.count()) // select count(member.id)
+                .from(member)
+                .fetchOne();
     }
 
     // search options
