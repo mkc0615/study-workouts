@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.domain.Member;
 import study.querydsl.domain.QMember;
@@ -609,7 +610,7 @@ public class QuerydslBasicTest {
         Integer ageParam = 10;
 
         List<Member> result = searchMember2(usernameParam, ageParam);
-        assertThat(result.size()).isEqualTo(1)
+        assertThat(result.size()).isEqualTo(1);
     }
 
     private List<Member> searchMember2(String usernameCond, Integer ageCond) {
@@ -633,5 +634,35 @@ public class QuerydslBasicTest {
 
     private BooleanExpression allEq(String usernameCond, Integer ageCond){
         return usernameEq(usernameCond).and(ageEq(ageCond));
+    }
+
+    // bach query
+    @Test
+    public void bulkUpdate(){
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        // 영속성context에 남은 업데이트 안된 데이터를 비움
+        em.flush();
+        em.clear();
+    }
+
+    @Test
+    public void bulkAdd(){
+        long count = queryFactory
+                .update(member)
+                .set(member.age, member.age.multiply(2))
+                .execute();
+    }
+
+    @Test
+    public void bulkDelete(){
+        queryFactory
+                .delete(member)
+                .where(member.age.gt(18))
+                .execute();
     }
 }
